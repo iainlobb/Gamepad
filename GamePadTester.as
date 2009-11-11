@@ -93,7 +93,7 @@
 			
 			// Car (the rectangle)
 			
-			if (gamePad2.y < 0)
+			if (gamePad2.y <= 0)
 			{
 				car.rotation += gamePad2.x * 2;
 			}
