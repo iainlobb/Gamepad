@@ -40,10 +40,12 @@
 		
 		public var isCircle:Boolean;
 		public var autoStep:Boolean;
+		public var ease:Number;
 		
-		public function Gamepad(stage:Stage, isCircle:Boolean, autoStep:Boolean = true)
+		public function Gamepad(stage:Stage, isCircle:Boolean, ease:Number = 0.2, autoStep:Boolean = true)
 		{
 			this.isCircle = isCircle;
+			this.ease = ease;
 			
 			stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown, false, 0, true);
 			stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp, false, 0, true);
@@ -72,8 +74,8 @@
 		
 		public function step():void
 		{
-			_x += (_targetX - _x) * 0.2;
-			_y += (_targetY - _y) * 0.2;
+			_x += (_targetX - _x) * ease;
+			_y += (_targetY - _y) * ease;
 		}
 		
 		protected function onEnterFrame(event:Event):void

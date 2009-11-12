@@ -21,6 +21,8 @@
 		
 		public function GamePadTester() 
 		{
+			trace('Remember to "Disable Keyboard Shorcuts" in the stand-alone Flash player!');
+			
 			addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 		}
 		
@@ -44,7 +46,7 @@
 			gamePad1 = new Gamepad(stage, true);
 			gamePad1.useWASD();
 			
-			gamePad2 = new Gamepad(stage, false);
+			gamePad2 = new Gamepad(stage, false, 0.4);
 		}
 		
 		private function createGamepadViews():void
@@ -93,6 +95,8 @@
 			
 			// Car (the rectangle)
 			
+			// TANK CONTROLS:
+			/*
 			if (gamePad2.y <= 0)
 			{
 				car.rotation += gamePad2.x * 2;
@@ -101,6 +105,10 @@
 			{
 				car.rotation -= gamePad2.x * 2;
 			}
+			*/
+			
+			// CAR CONTROLS 
+			car.rotation += gamePad2.x * -gamePad2.y * 2;
 			
 			var carAngle:Number = -car.rotation * (Math.PI / 180);
 			
