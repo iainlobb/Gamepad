@@ -1,6 +1,8 @@
 /* 
 Copyright 2008 Cheezeworld.com 
 
+Additional key constants added by Iain Lobb.
+
 Permission is hereby granted, free of charge, to any person
 obtaining a copy of this software and associated documentation
 files (the "Software"), to deal in the Software without
@@ -113,7 +115,8 @@ package com.cheezeworld.utils
 		public static const BACKWARD_SLASH:int = 220;
 		public static const CLOSED_BRACKET:int = 221;
 		public static const QUOTES:int = 222;
-		
+		public static const LESS_THAN:int = 188;
+		public static const GREATER_THAN:int = 190;
 		
 		//OTHER KEYS		
 		public static const BACKSPACE:int = 8;
