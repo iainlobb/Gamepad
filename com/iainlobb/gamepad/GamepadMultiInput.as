@@ -37,24 +37,43 @@ package com.iainlobb.gamepad
 		public var downTicks:int = -1;
 		public var upTicks:int = -1;
 		public var inputs:Array;
+		public var isOr:Boolean;
 		
-		public function GamepadMultiInput(inputs:Array) 
+		public function GamepadMultiInput(inputs:Array, isOr:Boolean) 
 		{
 			this.inputs = inputs;
+			this.isOr = isOr;
 		}
 		
 		public function update():void
 		{
-			isDown = true;
-			
-			for each (var gamepadInput:GamepadInput in inputs)
+			if (isOr)
 			{
-				if (!gamepadInput.isDown)
+				isDown = false;
+			
+				for each (var gamepadInput:GamepadInput in inputs)
 				{
-					isDown = false;
-					break;
+					if (gamepadInput.isDown)
+					{
+						isDown = true;
+						break;
+					}
 				}
 			}
+			else
+			{
+				isDown = true;
+			
+				for each (var gamepadInput:GamepadInput in inputs)
+				{
+					if (!gamepadInput.isDown)
+					{
+						isDown = false;
+						break;
+					}
+				}
+			}
+			
 			
 			if (isDown)
 			{

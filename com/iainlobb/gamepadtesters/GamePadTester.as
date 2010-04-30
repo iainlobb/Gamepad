@@ -68,7 +68,8 @@ package com.iainlobb.gamepadtesters
 		private function createGamepads():void
 		{
 			gamePad1 = new Gamepad(stage, true);
-			gamePad1.useWASD(false);
+			gamePad1.useWASD(true);
+			gamePad1.useIJKL(false);
 			
 			gamePad2 = new Gamepad(stage, false, 0.4);
 		}
@@ -92,7 +93,12 @@ package com.iainlobb.gamepadtesters
 		{
 			character = new MovieClip();
 			character.graphics.beginFill(0x669900, 1);
-			character.graphics.drawRect( -25, -25, 50, 50);
+			//character.graphics.drawRect( -25, -25, 50, 50);
+			character.graphics.moveTo(0, 20);
+			character.graphics.lineTo(20, 0);
+			character.graphics.lineTo(-20, 0);
+			character.graphics.lineTo(0, 20);
+			character.graphics.drawCircle(0, 0, 25);
 			character.graphics.endFill();
 			character.x = 100;
 			character.y = 200;
@@ -103,6 +109,10 @@ package com.iainlobb.gamepadtesters
 		{
 			car = new MovieClip();
 			car.graphics.beginFill(0xFF6600, 1);
+			car.graphics.moveTo(0, -20);
+			car.graphics.lineTo(20, 0);
+			car.graphics.lineTo(-20, 0);
+			car.graphics.lineTo(0, -20);
 			car.graphics.drawRect(-25,  -50, 50, 100);
 			car.graphics.endFill();
 			car.x = 300;
@@ -116,6 +126,7 @@ package com.iainlobb.gamepadtesters
 			
 			character.x += gamePad1.x * 5;
 			character.y += gamePad1.y * 5;
+			character.rotation = -gamePad1.rotation;
 			
 			// Car (the rectangle)
 			

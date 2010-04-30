@@ -82,11 +82,11 @@ package com.iainlobb.gamepad
 			
 			_inputs = [_up, _down, _left, _right, _fire1, _fire2];
 			
-			_upLeft = new GamepadMultiInput([_up, _left]);
-			_upRight = new GamepadMultiInput([_up, _right]);
-			_downLeft = new GamepadMultiInput([_down, _left]);
-			_downRight = new GamepadMultiInput([_down, _right]);
-			_anyDirection = new GamepadMultiInput([_up, _down, _left, _right]);
+			_upLeft = new GamepadMultiInput([_up, _left], false);
+			_upRight = new GamepadMultiInput([_up, _right], false);
+			_downLeft = new GamepadMultiInput([_down, _left], false);
+			_downRight = new GamepadMultiInput([_down, _right], false);
+			_anyDirection = new GamepadMultiInput([_up, _down, _left, _right], true);
 			
 			_multiInputs = [_upLeft, _upRight, _downLeft, _downRight, _anyDirection];
 			
@@ -212,6 +212,8 @@ package com.iainlobb.gamepad
 		public function get anyDirection():GamepadMultiInput { return _anyDirection; }
 		
 		public function get magnitude():Number { return _magnitude; }
+		
+		public function get rotation():Number { return _rotation; }
 		
 		// PROTECTED METHODS:
 		
