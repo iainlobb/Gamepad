@@ -58,9 +58,10 @@ package com.iainlobb.gamepad
 		protected var _y:Number = 0;
 		protected var _targetX:Number = 0;
 		protected var _targetY:Number = 0;
-		protected var _angle:Number;
-		protected var _rotation:Number;
-		protected var _magnitude:Number;
+		protected var _angle:Number = 0;
+		//protected var _targetAngle:Number = 0;
+		protected var _rotation:Number = 0;
+		protected var _magnitude:Number = 0;
 		
 		public var isCircle:Boolean;
 		public var autoStep:Boolean;
@@ -266,14 +267,14 @@ package com.iainlobb.gamepad
 				_targetX = 0;
 			}
 			
-			_angle = Math.atan2(_targetX, _targetY);
+			var _targetAngle:Number = Math.atan2(_targetX, _targetY);
 			
-			_rotation = _angle * 57.29577951308232;
+			//_rotation = _angle * 57.29577951308232;
 			
 			if (isCircle && _anyDirection.isDown)
 			{
-				_targetX = Math.sin(angle);
-				_targetY = Math.cos(angle);
+				_targetX = Math.sin(_targetAngle);
+				_targetY = Math.cos(_targetAngle);
 			}
 		}
 	}
