@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2010 Iain Lobb
+Copyright (c) 2010 Iain Lobb - iainlobb@gmail.com
 
 Permission is hereby granted, free of charge, to any person
 obtaining a copy of this software and associated documentation
@@ -25,27 +25,31 @@ OTHER DEALINGS IN THE SOFTWARE.
 
 package com.iainlobb.gamepad 
 {
-	/**
-	 * ...
-	 * @author Iain Lobb - iainlobb@googlemail.com
-	 */
 	public class GamepadInput
 	{
-		public var isDown:Boolean;
-		public var isPressed:Boolean;
-		public var isReleased:Boolean;
-		public var downTicks:int = -1;
-		public var upTicks:int = -1;
-		public var mappedKeys:Array;
+		protected var _isDown:Boolean;
+		protected var _isPressed:Boolean;
+		protected var _isReleased:Boolean;
+		protected var _downTicks:int = -1;
+		protected var _upTicks:int = -1;
+		protected var mappedKeys:Array;
 		
+		/*
+		* Represents a gamepad button - can be mapped to more than 1 physical key simultaneously, allowing multiple redundant control schemes.  
+		*/
 		public function GamepadInput(keyCode:int = -1) 
 		{
 			mappedKeys = (keyCode > -1) ? [keyCode] : [];
 		}
 		
-		public function mapKey(keyCode:int, replaceAll:Boolean = false):void
+		/*
+		* Map a physical key to this virtual button.
+		* @param keyCode Use the constants from com.cheezeworld.utils.KeyCode.
+		* @param replaceExisting pass true to replace exisiting keys, false to add mapping without replacing existing keys.
+		*/
+		public function mapKey(keyCode:int, replaceExisting:Boolean = false):void
 		{
-			if (replaceAll)
+			if (replaceExisting)
 			{
 				mappedKeys = [keyCode];
 			}
@@ -55,37 +59,75 @@ package com.iainlobb.gamepad
 			}
 		}
 		
+		/*
+		* Unmap a physical key from this virtual button.
+		* @param keyCode Use the constants from com.cheezeworld.utils.KeyCode.
+		*/
 		public function unmapKey(keyCode:int):void
 		{
 			mappedKeys.splice(mappedKeys.indexOf(keyCode), 1);
 		}
 		
+		/*
+		* Called by owner Gamepad. End users should not call this function.
+		*/
 		public function update():void
 		{
-			if (isDown)
+			if (_isDown)
 			{
-				isPressed = downTicks == -1;
-				isReleased = false;
-				downTicks++;
-				upTicks = -1;
+				_isPressed = _downTicks == -1;
+				_isReleased = false;
+				_downTicks++;
+				_upTicks = -1;
 			}
 			else
 			{
-				isReleased = upTicks == -1;
-				isPressed = false;
-				upTicks++;
-				downTicks = -1;
+				_isReleased = _upTicks == -1;
+				_isPressed = false;
+				_upTicks++;
+				_downTicks = -1;
 			}
 		}
 		
+		/*
+		* Called by owner Gamepad. End users should not call this function.
+		*/
 		public function keyDown(keyCode:int):void
 		{
-			if (mappedKeys.indexOf(keyCode) > -1) isDown = true;
+			if (mappedKeys.indexOf(keyCode) > -1) _isDown = true;
 		}
 		
+		/*
+		* Called by owner Gamepad. End users should not call this function.
+		*/
 		public function keyUp(keyCode:int):void
 		{
-			if (mappedKeys.indexOf(keyCode) > -1) isDown = false;
+			if (mappedKeys.indexOf(keyCode) > -1) _isDown = false;
 		}
+		
+		/*
+		 * Is this input currently held down. 
+		 */
+		public function get isDown():Boolean { return _isDown; }
+		
+		/*
+		 * Was this input pressed this frame/step - use instead of listening to key down events.
+		 */
+		public function get isPressed():Boolean { return _isPressed; }
+		
+		/*
+		 * Was this input released this frame/step - use instead of listening to key up events.
+		 */
+		public function get isReleased():Boolean { return _isReleased; }
+		
+		/*
+		 * How long has the input been held down.
+		 */
+		public function get downTicks():int { return _downTicks; }
+		
+		/*
+		 * How long since the input was last released.
+		 */
+		public function get upTicks():int { return _upTicks; }
 	}
 }

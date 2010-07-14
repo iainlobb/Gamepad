@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2010 Iain Lobb
+Copyright (c) 2010 Iain Lobb - iainlobb@gmail.com
 
 Permission is hereby granted, free of charge, to any person
 obtaining a copy of this software and associated documentation
@@ -25,71 +25,99 @@ OTHER DEALINGS IN THE SOFTWARE.
 
 package com.iainlobb.gamepad 
 {
-	/**
-	 * ...
-	 * @author Iain Lobb - iainlobb@googlemail.com
-	 */
 	public class GamepadMultiInput
 	{
-		public var isDown:Boolean;
-		public var isPressed:Boolean;
-		public var isReleased:Boolean;
-		public var downTicks:int = -1;
-		public var upTicks:int = -1;
-		public var inputs:Array;
-		public var isOr:Boolean;
+		protected var _isDown:Boolean;
+		protected var _isPressed:Boolean;
+		protected var _isReleased:Boolean;
+		protected var _downTicks:int = -1;
+		protected var _upTicks:int = -1;
+		protected var isOr:Boolean;
+		protected var inputs:Array;
 		
+		/*
+		* Represents a virtual button that combines the input of 2 or more other buttons, e.g. up-left/north-west. End users shouldn't need to create these.
+		* 
+		*/
 		public function GamepadMultiInput(inputs:Array, isOr:Boolean) 
 		{
 			this.inputs = inputs;
 			this.isOr = isOr;
 		}
 		
+		/*
+		* Called by owner Gamepad. End users should not call this function.
+		*/
 		public function update():void
 		{
 			if (isOr)
 			{
-				isDown = false;
+				_isDown = false;
 			
 				for each (var gamepadInput:GamepadInput in inputs)
 				{
 					if (gamepadInput.isDown)
 					{
-						isDown = true;
+						_isDown = true;
 						break;
 					}
 				}
 			}
 			else
 			{
-				isDown = true;
+				_isDown = true;
 			
 				for each (var gamepadInput:GamepadInput in inputs)
 				{
 					if (!gamepadInput.isDown)
 					{
-						isDown = false;
+						_isDown = false;
 						break;
 					}
 				}
 			}
 			
 			
-			if (isDown)
+			if (_isDown)
 			{
-				isPressed = downTicks == -1;
-				isReleased = false;
-				downTicks++;
-				upTicks = -1;
+				_isPressed = _downTicks == -1;
+				_isReleased = false;
+				_downTicks++;
+				_upTicks = -1;
 			}
 			else
 			{
-				isReleased = upTicks == -1;
-				isPressed = false;
-				upTicks++;
-				downTicks = -1;
+				_isReleased = _upTicks == -1;
+				_isPressed = false;
+				_upTicks++;
+				_downTicks = -1;
 			}
 		}
+		
+		/*
+		 * Is this input currently held down. 
+		 */
+		public function get isDown():Boolean { return _isDown; }
+		
+		/*
+		 * Was this input pressed this frame/step - use instead of listening to key down events.
+		 */
+		public function get isPressed():Boolean { return _isPressed; }
+		
+		/*
+		 * Was this input released this frame/step - use instead of listening to key up events.
+		 */
+		public function get isReleased():Boolean { return _isReleased; }
+		
+		/*
+		 * How long has the input been held down.
+		 */
+		public function get downTicks():int { return _downTicks; }
+		
+		/*
+		 * How long since the input was last released.
+		 */
+		public function get upTicks():int { return _upTicks; }
 		
 	}
 }

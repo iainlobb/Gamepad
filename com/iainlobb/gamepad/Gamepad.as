@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2010 Iain Lobb
+Copyright (c) 2010 Iain Lobb - iainlobb@gmail.com
 
 Permission is hereby granted, free of charge, to any person
 obtaining a copy of this software and associated documentation
@@ -59,13 +59,26 @@ package com.iainlobb.gamepad
 		protected var _targetX:Number = 0;
 		protected var _targetY:Number = 0;
 		protected var _angle:Number = 0;
-		//protected var _targetAngle:Number = 0;
 		protected var _rotation:Number = 0;
 		protected var _magnitude:Number = 0;
 		
+		/*
+		* Prevents diagonal movement being faster than horizontal or vertical movement. Use for top-down view games.  
+		*/
 		public var isCircle:Boolean;
-		public var autoStep:Boolean;
+		
+		/*
+		* Simple ease-out speed (range 0 to 1). Pass value of 1 to prevent easing. 
+		*/
 		public var ease:Number;
+		
+		/*
+		 * Gamepad simplifies keyboard input by simulating an analog joystick.
+		 * @param stage A reference to the stage is needed to listen for system events
+		 * @param isCircle Prevents diagonal movement being faster than horizontal or vertical movement. Use for top-down view games.
+		 * @param ease Simple ease-out speed (range 0 to 1). Pass value of 1 to prevent easing.
+		 * @param autoStep Pass in false if you intend to call step() manually.
+		*/
 		
 		public function Gamepad(stage:Stage, isCircle:Boolean, ease:Number = 0.2, autoStep:Boolean = true)
 		{
@@ -105,6 +118,15 @@ package com.iainlobb.gamepad
 		
 		// DIRECTION PRESETS
 		
+		/*
+		 * Quickly map all direction keys
+		 * @param up Keycode - use the constants from com.cheezeworld.utils.KeyCode.
+		 * @param down Keycode - use the constants from com.cheezeworld.utils.KeyCode.
+		 * @param left Keycode - use the constants from com.cheezeworld.utils.KeyCode.
+		 * @param right Keycode - use the constants from com.cheezeworld.utils.KeyCode.
+		 * @param replaceExisting pass true to replace exisiting keys, false to add mapping without replacing existing keys.
+		 */
+		
 		public function mapDirection(up:int, down:int, left:int, right:int, replaceExisting:Boolean = false):void
 		{
 			_up.mapKey(up, replaceExisting);
@@ -113,20 +135,40 @@ package com.iainlobb.gamepad
 			_right.mapKey(right, replaceExisting);
 		}
 		
+		/*
+		 * Preset to use the direction arrow keys for movement
+		 * @param replaceExisting pass true to replace exisiting keys, false to add mapping without replacing existing keys. 
+		 */
+		
 		public function useArrows(replaceExisting:Boolean = false):void
 		{
 			mapDirection(Keyboard.UP, Keyboard.DOWN, Keyboard.LEFT, Keyboard.RIGHT, replaceExisting);
 		}
+		
+		/*
+		 * Preset to use the W, A, S and D keys for movement. This layout doesn't work for players with French AZERTY keyboards - call useZQSD() instead.
+		 * @param replaceExisting pass true to replace exisiting keys, false to add mapping without replacing existing keys. 
+		 */
 		
 		public function useWASD(replaceExisting:Boolean = false):void
 		{
 			mapDirection(KeyCode.W, KeyCode.S, KeyCode.A, KeyCode.D, replaceExisting);
 		}
 		
+		/*
+		 * Preset to use the I, J, K and L keys for movement.
+		 * @param replaceExisting pass true to replace exisiting keys, false to add mapping without replacing existing keys. 
+		 */
+		
 		public function useIJKL(replaceExisting:Boolean = false):void
 		{
 			mapDirection(KeyCode.I, KeyCode.K, KeyCode.J, KeyCode.L, replaceExisting);
 		}
+		
+		/*
+		 * Preset to use the Z, Q, S and D keys for movement. Use this mapping instead of useWASD() when targeting French AZERTY keyboards.
+		 * @param replaceExisting pass true to replace exisiting keys, false to add mapping without replacing existing keys. 
+		 */
 		
 		public function useZQSD(replaceExisting:Boolean = false):void
 		{
@@ -135,31 +177,63 @@ package com.iainlobb.gamepad
 		
 		// FIRE BUTTON PRESETS
 		
+		/*
+		 * Map the fire buttons.
+		 * @param fire1 The primary fire button.
+		 * @param fire2 The secondary fire button.
+		 * @param replaceExisting pass true to replace exisiting keys, false to add mapping without replacing existing keys. 
+		 */
+		
 		public function mapFireButtons(fire1:int, fire2:int, replaceExisting:Boolean = false):void
 		{
 			_fire1.mapKey(fire1, replaceExisting);
 			_fire2.mapKey(fire2, replaceExisting);
 		}
 		
+		/*
+		 * Preset to use the < and > keys for fire buttons.
+		 * @param replaceExisting pass true to replace exisiting keys, false to add mapping without replacing existing keys. 
+		 */
+		
 		public function useChevrons(replaceExisting:Boolean = false):void
 		{
 			mapFireButtons(KeyCode.LESS_THAN, KeyCode.GREATER_THAN, replaceExisting);
 		}
+		
+		/*
+		 * Preset to use the G and H keys for fire buttons.
+		 * @param replaceExisting pass true to replace exisiting keys, false to add mapping without replacing existing keys. 
+		 */
 		
 		public function useGH(replaceExisting:Boolean = false):void
 		{
 			mapFireButtons(KeyCode.G, KeyCode.H, replaceExisting);
 		}
 		
+		/*
+		 * Preset to use the Z and X keys for fire buttons.
+		 * @param replaceExisting pass true to replace exisiting keys, false to add mapping without replacing existing keys. 
+		 */
+		
 		public function useZX(replaceExisting:Boolean = false):void
 		{
 			mapFireButtons(KeyCode.Z, KeyCode.X, replaceExisting);
 		}
 		
+		/*
+		 * Preset to use the Y and X keys for fire buttons.
+		 * @param replaceExisting pass true to replace exisiting keys, false to add mapping without replacing existing keys. 
+		 */
+		
 		public function useYX(replaceExisting:Boolean = false):void
 		{
 			mapFireButtons(KeyCode.Y, KeyCode.X, replaceExisting);
 		}
+		
+		/*
+		 * Preset to use the CTRL and SPACEBAR keys for fire buttons.
+		 * @param replaceExisting pass true to replace exisiting keys, false to add mapping without replacing existing keys. 
+		 */
 		
 		public function useControlSpace(replaceExisting:Boolean = false):void
 		{
@@ -167,6 +241,10 @@ package com.iainlobb.gamepad
 		}
 		
 		// UPDATE:
+		
+		/*
+		 * Step/Update the gamepad. Called automatically if you didn't pass in autoStep as false. This should be called in sync with you game/physics step.
+		*/
 		
 		public function step():void
 		{
@@ -184,36 +262,84 @@ package com.iainlobb.gamepad
 		
 		// GETTERS:
 		
+		/*
+		* The angle of the direction pad in radians.
+		*/
 		public function get angle():Number { return _angle; }
 		
+		/*
+		* The horizontal component of the direction pad, value between 0 and 1.
+		*/
 		public function get x():Number { return _x; }
 		
+		/*
+		* The vertical component of the direction pad, value between 0 and 1.
+		*/
 		public function get y():Number { return _y; }
 		
+		/*
+		* A GamepadInput representing the up/north direction. Configure with its mapKey and unmapKey functions. Get state information from isDown, isPressed, isReleased, downTicks and upTicks.  
+		*/
 		public function get up():GamepadInput { return _up; }
 		
+		/*
+		* A GamepadInput representing the down/south direction. Configure with its mapKey and unmapKey functions. Get state information from isDown, isPressed, isReleased, downTicks and upTicks.  
+		*/
 		public function get down():GamepadInput { return _down; }
 		
+		/*
+		* A GamepadInput representing the left/west direction. Configure with its mapKey and unmapKey functions. Get state information from isDown, isPressed, isReleased, downTicks and upTicks.  
+		*/
 		public function get left():GamepadInput { return _left; }
 		
+		/*
+		* A GamepadInput representing the right/east direction. Configure with its mapKey and unmapKey functions. Get state information from isDown, isPressed, isReleased, downTicks and upTicks.  
+		*/
 		public function get right():GamepadInput { return _right; }
 		
+		/*
+		* A GamepadMultiInput representing the up-left/north-west direction. Get state information from isDown, isPressed, isReleased, downTicks and upTicks. End-users should not need to configure this input.
+		*/
 		public function get upLeft():GamepadMultiInput { return _upLeft; }
 		
+		/*
+		* A GamepadMultiInput representing the down-left/south-west direction. Get state information from isDown, isPressed, isReleased, downTicks and upTicks. End-users should not need to configure this input.
+		*/
 		public function get downLeft():GamepadMultiInput { return _downLeft; }
 		
+		/*
+		* A GamepadMultiInput representing the up-right/north-east direction. Get state information from isDown, isPressed, isReleased, downTicks and upTicks. End-users should not need to configure this input.
+		*/
 		public function get upRight():GamepadMultiInput { return _upRight; }
 		
+		/*
+		* A GamepadMultiInput representing the down-right/south-east direction. Get state information from isDown, isPressed, isReleased, downTicks and upTicks. End-users should not need to configure this input.
+		*/
 		public function get downRight():GamepadMultiInput { return _downRight; }
 		
+		/*
+		* A GamepadInput representing the primary fire button. Configure with its mapKey and unmapKey functions. Get state information from isDown, isPressed, isReleased, downTicks and upTicks.  
+		*/
 		public function get fire1():GamepadInput { return _fire1; }
 		
+		/*
+		* A GamepadInput representing the secondary fire button. Configure with its mapKey and unmapKey functions. Get state information from isDown, isPressed, isReleased, downTicks and upTicks.  
+		*/
 		public function get fire2():GamepadInput { return _fire2; }
 		
+		/*
+		* A special GamepadMultiInput representing whether any direction is pressed. Get state information from isDown, isPressed, isReleased, downTicks and upTicks. End-users should not need to configure this input.
+		*/
 		public function get anyDirection():GamepadMultiInput { return _anyDirection; }
 		
+		/*
+		 * The length/magnitude of the direction pad, between 0 and 1.
+		*/
 		public function get magnitude():Number { return _magnitude; }
 		
+		/*
+		 * the angle of the direction pad in degrees, between 0 and 360.
+		*/
 		public function get rotation():Number { return _rotation; }
 		
 		// PROTECTED METHODS:
@@ -268,8 +394,6 @@ package com.iainlobb.gamepad
 			}
 			
 			var _targetAngle:Number = Math.atan2(_targetX, _targetY);
-			
-			//_rotation = _angle * 57.29577951308232;
 			
 			if (isCircle && _anyDirection.isDown)
 			{

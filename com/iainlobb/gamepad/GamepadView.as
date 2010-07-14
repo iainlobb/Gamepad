@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2010 Iain Lobb
+Copyright (c) 2010 Iain Lobb - iainlobb@gmail.com
 
 Permission is hereby granted, free of charge, to any person
 obtaining a copy of this software and associated documentation
@@ -27,44 +27,35 @@ package com.iainlobb.gamepad
 {
 	import flash.display.Sprite;
 	import flash.events.Event;
-	/**
-	 * ...
-	 * @author Iain Lobb - iainlobb@googlemail.com
-	 */
+	
 	public class GamepadView extends Sprite
 	{
-		private var ball:Sprite;
-		private var button1:Sprite;
-		private var button2:Sprite;
-		private var up:Sprite;
-		private var down:Sprite;
-		private var left:Sprite;
-		private var right:Sprite;
-		private var gamePad:Gamepad;
-		private var colour:uint;
+		protected var ball:Sprite;
+		protected var button1:Sprite;
+		protected var button2:Sprite;
+		protected var up:Sprite;
+		protected var down:Sprite;
+		protected var left:Sprite;
+		protected var right:Sprite;
+		protected var gamepad:Gamepad;
+		protected var colour:uint;
 		
+		/*
+		 * Visual representation of a Gamepad instance.
+		 */
 		public function GamepadView() 
 		{
 			
 		}
 		
-		private function onEnterFrame(event:Event):void
+		/*
+		 * Initialise the instance.
+		 * @param gamepad The Gamepad instance to show.
+		 * @param colour Hex value of the desired colour.
+		 */
+		public function init(gamepad:Gamepad, colour:uint = 0x669900):void
 		{
-			ball.x = gamePad.x * 25;
-			ball.y = gamePad.y * 25;
-			
-			button1.alpha = gamePad.fire1.isDown ? 1 : 0.2;
-			button2.alpha = gamePad.fire2.isDown ? 1 : 0.2;
-			
-			up.alpha = gamePad.up.isDown ? 1 : 0.2;
-			down.alpha = gamePad.down.isDown ? 1 : 0.2;
-			left.alpha = gamePad.left.isDown ? 1 : 0.2;
-			right.alpha = gamePad.right.isDown ? 1 : 0.2;
-		}
-		
-		public function init(gamePad:Gamepad, colour:uint = 0x669900):void
-		{
-			this.gamePad = gamePad;
+			this.gamepad = gamepad;
 			
 			this.colour = colour;
 			
@@ -79,9 +70,23 @@ package com.iainlobb.gamepad
 			createKeypad();
 		}
 		
-		private function drawBackground():void
+		protected function onEnterFrame(event:Event):void
 		{
-			if (gamePad.isCircle)
+			ball.x = gamepad.x * 25;
+			ball.y = gamepad.y * 25;
+			
+			button1.alpha = gamepad.fire1.isDown ? 1 : 0.2;
+			button2.alpha = gamepad.fire2.isDown ? 1 : 0.2;
+			
+			up.alpha = gamepad.up.isDown ? 1 : 0.2;
+			down.alpha = gamepad.down.isDown ? 1 : 0.2;
+			left.alpha = gamepad.left.isDown ? 1 : 0.2;
+			right.alpha = gamepad.right.isDown ? 1 : 0.2;
+		}
+		
+		protected function drawBackground():void
+		{
+			if (gamepad.isCircle)
 			{
 				drawCircle();
 			}
@@ -91,21 +96,21 @@ package com.iainlobb.gamepad
 			}
 		}
 		
-		private function drawSquare():void
+		protected function drawSquare():void
 		{
 			graphics.beginFill(colour, 0.2);
 			graphics.drawRoundRect(-50, -50, 100, 100, 50, 50);
 			graphics.endFill();
 		}
 		
-		private function drawCircle():void
+		protected function drawCircle():void
 		{
 			graphics.beginFill(colour, 0.2);
 			graphics.drawCircle(0, 0, 50);
 			graphics.endFill();
 		}
 		
-		private function createBall():void
+		protected function createBall():void
 		{
 			ball = new Sprite();
 			ball.graphics.beginFill(colour, 1);
@@ -114,7 +119,7 @@ package com.iainlobb.gamepad
 			addChild(ball);
 		}
 		
-		private function createKeypad():void
+		protected function createKeypad():void
 		{
 			up = createKey();
 			up.x = -125;
@@ -133,7 +138,7 @@ package com.iainlobb.gamepad
 			right.y = 20;
 		}
 		
-		private function createButtons():void
+		protected function createButtons():void
 		{
 			button1 = createButton();
 			button1.x = 75;
@@ -143,7 +148,7 @@ package com.iainlobb.gamepad
 			button2.y = 35;
 		}
 		
-		private function createButton():Sprite
+		protected function createButton():Sprite
 		{
 			var button:Sprite = new Sprite();
 			button.graphics.beginFill(colour, 1);
@@ -154,7 +159,7 @@ package com.iainlobb.gamepad
 			return button;
 		}
 		
-		private function createKey():Sprite
+		protected function createKey():Sprite
 		{
 			var key:Sprite = new Sprite();
 			key.graphics.beginFill(colour, 1);
