@@ -80,12 +80,15 @@ package com.iainlobb.gamepad
 		 * @param autoStep Pass in false if you intend to call step() manually.
 		*/
 		
+		private var stage:Stage;
+		
 		public function Gamepad(stage:Stage, isCircle:Boolean, ease:Number = 0.2, autoStep:Boolean = true)
 		{
 			trace('Remember to hit "Control > Disable Keyboard Shorcuts" in the Flash IDE & stand-alone Flash player!');
 			
 			this.isCircle = isCircle;
 			this.ease = ease;
+			this.stage = stage;
 			
 			_up = new GamepadInput();
 			_down = new GamepadInput();
@@ -114,6 +117,16 @@ package com.iainlobb.gamepad
 			{
 				stage.addEventListener(Event.ENTER_FRAME, onEnterFrame, false, 0, true);
 			}
+		}
+		
+		/*
+		 * Destructor.
+		 */
+		
+		public function destroy():void {
+			stage.removeEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
+			stage.removeEventListener(KeyboardEvent.KEY_UP, onKeyUp);
+			stage.removeEventListener(Event.ENTER_FRAME, onEnterFrame);
 		}
 		
 		// DIRECTION PRESETS
